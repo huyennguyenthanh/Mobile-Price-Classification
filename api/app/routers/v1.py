@@ -13,9 +13,6 @@ async def check_healthy():
 )
 async def predict(data: Data):
 
-    predictor = SmartphonePricePredict()
-    result = predict.predict(data)
-
-    print(result)
-
-    return {200: "OK"}
+    predictor = SmartphonePricePredict(model_name="DecisionTree")
+    result = predictor.predict(data)
+    return result

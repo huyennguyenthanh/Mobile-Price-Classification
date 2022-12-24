@@ -1,25 +1,23 @@
 import os
 import pickle
-
+import numpy as np
 class SmartphonePricePredict:
 
     def __init__(self, model_name) -> None:
         self.model = self.load_model(model_name)
         self.config_label = self.load_config_label()
 
-        
-
-    def load_model(self, model_name):
+    def load_model(self, model_name="DecisionTree"):
         """
         model_name:
             DecisionTree
             SoftmaxRegression
 
         """
-        model = pickle.load(os.path.join("weights", model_name+".pkl"))
+        model = pickle.load(open(os.path.join("weights", model_name+".pkl"), "rb"))
         return model
 
-    def load_confid_label(self):
+    def load_config_label(self):
         labels = {
             0: "low",
             1: "medium",
@@ -29,7 +27,14 @@ class SmartphonePricePredict:
         return labels
 
     def predict(self, data):
-
+        data = self.process(data)
         prediction = self.model.predict(data)
+        return self.config_label[prediction[0]]
 
-        return prediction
+    def process(self, data):
+        ldata = []
+        for k, v in dict(data).items():
+            ldata.append(v)
+
+        data = np.asarray(ldata).reshape(-1, 20)
+        return data
