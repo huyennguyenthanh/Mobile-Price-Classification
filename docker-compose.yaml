@@ -1,0 +1,30 @@
+version: "3.10"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  api:
+    build:
+      context: ./api
+    volumes:
+      - ./api/app:/app
+      - ./weights:/weights    
+    environment:
+      - MODEL_SERVER_URI=model_server:9000
+      - GRPC_POLL_STRATEGY=poll
+    command:
+      [
+        "uvicorn",
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload"
+      ]
+    ports:
+      - "8000:8000"
+    networks:
+      - app-tier
