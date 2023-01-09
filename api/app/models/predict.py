@@ -7,7 +7,7 @@ class SmartphonePricePredict:
         self.model = self.load_model(model_name)
         self.config_label = self.load_config_label()
 
-    def load_model(self, model_name="DecisionTree"):
+    def load_model(self, model_name="SoftmaxRegression"):
         """
         model_name:
             DecisionTree
@@ -36,5 +36,8 @@ class SmartphonePricePredict:
         for k, v in dict(data).items():
             ldata.append(v)
 
-        data = np.asarray(ldata).reshape(-1, 20)
+
+   
+
+        data = np.asarray(ldata).reshape(-1, len(ldata))
         return data
